@@ -24,6 +24,8 @@ im1 = cv.drawContours(gray, contours, -1, (0,255,0), 3)
 cv.imshow('img',im2)
 cv.waitKey(0)
  
+
+
   
 # printing output 
 print("\nDots number:",(len(contours))) 
