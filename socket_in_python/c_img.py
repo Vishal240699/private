@@ -29,25 +29,35 @@ def receive():
     rMessage = client_socket.recv(buff)
     if not rMessage:pass
     
-    elif(rMessage.decode() == 'data'):
-      pic = open('pic1','rb')
-      pic1 = pickle.load(pic)
-      img = cv2.imdecode(pic1,1)
-      cv2.imshow('asd',img)
-      cv2.waitKey(0)
-      pic.close()
-      cv2.destroyAllWindows()
+    elif(rMessage.decode() == 's2c'):
+      while True:
+        #pic = open('pic1','rb')
+        rMessage = client_socket.recv(buff)
+        if rMessage: break
+      
+      print(rMessage)
+      pic1 = pickle.loads(rMessage)
+      print(pic1)
       print(">> ",end = '')
-           
+             
     else:
       print("Server Replied:",rMessage.decode())
       print(">> ",end = '')
+
+
 def send():
   while True:
     sMessage = input(">> ")
-    if sMessage:
+    
+    if sMessage == "c2s":
       client_socket.send(sMessage.encode())
-      print("Client SAYS",sMessage)
+      data = "I am pickle"
+      x = pickle.dumps(data)
+      
+      client_socket.send(x)
+      
+    elif sMessage:
+      client_socket.send(sMessage.encode())
     else:pass
 
 t1 = threading.Thread(target=send)

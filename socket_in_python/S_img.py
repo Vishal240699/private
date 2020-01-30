@@ -3,6 +3,8 @@ from socket import *
 import threading
 import cv2
 import pickle
+import numpy as np
+import os
 
 server_port = 5000
 client_port = 5001
@@ -25,6 +27,13 @@ def receive():
         rMessage = connection_socket.recv(buff)
         if not rMessage:pass
 
+        elif(rMessage.decode() == 'c2s'):
+            while True:
+                rMessage = connection_socket.recv(buff)
+                if rMessage: break
+            y = pickle.loads(rMessage)
+            print(y)
+
         else:
 
             print("Client Replied",rMessage.decode())
@@ -33,17 +42,19 @@ def send():
     while True:
         sMessage = input(">> ")
         
-        if (sMessage == 'capture'):
+        if (sMessage == 's2c'):
             connection_socket.send(sMessage.encode())
             img = cv2.imread("1.jpg")
             data = cv2.imencode('.jpg', img)[1]
-            pic = open('pic1','ab')
-            pickle.dump(data,pic)
-            pic.close()
-            #connection_socket.send(pic.encode())
+            data = "1234"
+            #pic = open('pic1','ab')
+            data = pickle.dumps(data)
+            connection_socket.send(data)
+            #pic.close()
+            
+            
         elif sMessage:
             connection_socket.send(sMessage.encode())
-            print("Server SAYS: ",sMessage)
             
         
             
