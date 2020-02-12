@@ -12,7 +12,7 @@ import struct
 import cv2
 
 server_name = '127.0.0.1'
-buff = 1000000000
+buff = 10000
 server_port = 6000
 client_port = 6001
 
@@ -60,16 +60,6 @@ def receive():
     else:
       print("Server Replied:",rMessage.decode())
       print(">> ",end = '')
-
-
-'''def send():
-  while True:
-    sMessage = input(">> ")
-    
-      
-    if sMessage:
-      client_socket.send(sMessage.encode())
-    else:pass'''
 
 t1 = threading.Thread(target=send)
 t2 = threading.Thread(target=receive)
